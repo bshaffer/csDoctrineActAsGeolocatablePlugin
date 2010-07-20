@@ -1,0 +1,17 @@
+GeolocatableArticle_CityStateZip:
+  columns:
+    name:           string(255)
+    city:           string(255)
+    state:          string(25)
+    zip:            string(25)
+  actAs:  
+    Geolocatable: 
+      fields:       [city, state, zip]
+      
+GeolocatableArticle_Address:
+  columns:
+    name:           string(255)
+    address:        string(255)
+  actAs:  
+    Geolocatable: 
+      fields:       [address]
