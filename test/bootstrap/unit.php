@@ -1,28 +1,13 @@
 <?php
 
-// handle --symfony_dir argument
-if (!isset($_SERVER['SYMFONY']))
+if (!isset($_SERVER['SYMFONY']) && file_exists('/tmp/symfony_dir')) 
 {
-  foreach ($argv as $arg) 
-  {
-    $params = explode('=', $arg);
-    if (isset($params[1]) && $params[0] == '--symfony_dir') 
-    {
-      $_SERVER['SYMFONY'] = $params[1];
-      break;
-    }
-  }
+  $_SERVER['SYMFONY'] = file_get_contents('/tmp/symfony_dir');
 }
 
-if (!isset($_SERVER['SYMFONY'])) 
+if (!isset($_SERVER['SYMFONY']) || !file_exists($_SERVER['SYMFONY'])) 
 {
-  // Default Path
-  $_SERVER['SYMFONY'] = dirname(__FILE__).'/../../../../lib/vendor/symfony/lib';
-}
-
-if (!file_exists($_SERVER['SYMFONY'])) 
-{
-  throw new Exception(sprintf("Symfony directory%s not found.  Please set \$_SERVER['SYMFONY'] or provide a --symfony_dir argument", isset($symfonyDir) ? " '$symfonyDir'" : ''));
+  throw new Exception(sprintf("Symfony directory%s not found.  Please set \$_SERVER['SYMFONY'] or provide a --symfony_dir argument", isset($_SERVER['SYMFONY']) ? " '$_SERVER[SYMFONY]'" : ''));
 }
 
 require_once $_SERVER['SYMFONY'].'/autoload/sfCoreAutoload.class.php';
