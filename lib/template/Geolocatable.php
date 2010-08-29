@@ -37,7 +37,7 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
     
     if (!$this->_options['fields']) 
     {
-      throw new sfException('The Geolocatable Behavior requires the "field" option to be set in your schema');
+      throw new sfException('The Geolocatable Behavior requires the "fields" option to be set in your schema');
     }
   }
 

@@ -12,11 +12,11 @@
   <email>bshaffer@centresource.com</email>
   <active>yes</active>
  </lead>
- <date>2009-04-25</date>
+ <date>2010-08-29</date>
  <time>15:54:35</time>
  <version>
-  <release>1.0.0</release>
-  <api>1.0.0</api>
+  <release>1.0.1</release>
+  <api>1.0.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -52,9 +52,6 @@
     <name>symfony</name>
     <channel>pear.symfony-project.com</channel>
     <min>1.1.0</min>
-    <max>1.2.0</max>
-    <max>1.3.0</max>
-    <max>1.4.0</max>
     <max>1.5.0</max>
     <exclude>1.5.0</exclude>
    </package>
@@ -75,6 +72,21 @@
    <license uri="http://www.symfony-project.org/license">MIT license</license>
    <notes>
    * Revamped Plugin for 1.4
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2010-08-29</date>
+   <license uri="http://www.symfony-project.org/license">MIT license</license>
+   <notes>
+   * Fixed Error message - option name "field" changed to "fields"
    </notes>
   </release>
  </changelog>
