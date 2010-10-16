@@ -90,7 +90,7 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
   {
     return $this->_url
             . '?'
-            . http_build_query(array('q' => $query, 'ouput' => 'csv'));
+            . http_build_query(array('q' => $query, 'output' => 'csv'));
   }
   
   public function retrieveGeocodesFromUrl($url)
