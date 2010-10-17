@@ -1,7 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/../bootstrap/unit.php';
-require_once $_SERVER['SYMFONY'].'/vendor/lime/lime.php';
+require_once dirname(__FILE__).'/../bootstrap/bootstrap.php';
 
 $t = new lime_test(12);
 
@@ -34,8 +33,8 @@ $t->info('Test Geolocatable Plugin locates by address');
   $article->address   = 'Tour Eiffel Champ de Mars 75007 Paris, France';
   $article->save();
   
-  $t->is($article->latitude, 48.8550136);
-  $t->is($article->longitude, 2.2891544);
+  $t->is($article->latitude, 48.8582780);
+  $t->is($article->longitude, 2.2942540);
 
 $t->info('Test Geolocatable Plugin updates latitude / longitude automatically when saved');
 
