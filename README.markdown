@@ -35,14 +35,4 @@ The Geolocatable plugin comes with some methods for geolocation:
     field "distance" on each object represents the distance away from the passed latitude and longitude.  
     If $distance is not null, results are limited to that distance from the given geocodes.
 
-Helper
--------
-
-The plugin has a simple geo helper it provides a function to display a gmap
-based on a microfomat and jquery
-
-    <?php use_helper('Geo'); ?>
-    <?php echo geo_gmap_card($id, $latitude, $longitude); ?>
-
-    
 Please contact bshaffer@centresource.com for any comments or questions
