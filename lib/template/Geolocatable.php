@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Easily refresh geo cordinates based on a specified set of fields
+ *
+ * @package    Locatable_Extension
+ * @subpackage template
+ * @author     Brent Shaffer
+ * @copyright  Copyright (c) 2008 Centre{source}, Brent Shaffer 2008-12-22. All rights reserved.
+ */
 class Doctrine_Template_Geolocatable extends Doctrine_Template
 {    
   /**
@@ -27,9 +35,9 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
   /**
    * Constructor for Locatable Template
    *
-   * @param array $options 
+   * @param array $options
+   *
    * @return void
-   * @author Brent Shaffer
    */
   public function __construct(array $options = array())
   {
@@ -41,22 +49,15 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
     }
   }
 
-
-  public function setup()
-  {
-
-  }
-
-
   /**
    * Set table definition for locatable behavior
    *
    * @return void
-   * @author Brent Shaffer
    */
   public function setTableDefinition()
   {
-    foreach ($this->_options['columns'] as $key => $options) {
+    foreach ($this->_options['columns'] as $key => $options)
+    {
       $name = $options['name'];
 
       if ($options['alias'])
@@ -75,18 +76,21 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
   // =======================
   public function buildGeoQuery()
   {
-    $obj = $this->getInvoker();
+    $obj   = $this->getInvoker();
     $query = array();
     foreach ($this->_options['fields'] as $field) 
     {
       $query[] = $obj->$field;
     }
-   return implode(', ', array_filter($query));
+
+    return implode(', ', array_filter($query));
   }
 
   public function buildUrlFromQuery($query)
   {
-   return $this->_url.'?q='.urlencode($query).'&output=csv';
+    return $this->_url
+            . '?'
+            . http_build_query(array('q' => $query, 'output' => 'csv'));
   }
   
   public function retrieveGeocodesFromUrl($url)
@@ -96,10 +100,10 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
 
     if (count($codes) >= 4) 
     {
-      $geocodes['latitude'] = $codes[2];
+      $geocodes['latitude']  = $codes[2];
       $geocodes['longitude'] = $codes[3];
     }
-    
+
     return $geocodes;
   }
   
@@ -111,33 +115,33 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
     {
       $url = $this->buildUrlFromQuery($this->buildGeoQuery());
     }
-    
+
     $geocodes = $this->retrieveGeocodesFromUrl($url);
-    $obj[$this->_options['columns']['latitude']['name']] = $geocodes['latitude'];
+    $obj[$this->_options['columns']['latitude']['name']]  = $geocodes['latitude'];
     $obj[$this->_options['columns']['longitude']['name']] = $geocodes['longitude'];
   }
 
   public function addDistanceQueryTableProxy($query, $latitude, $longitude, $distance = null)
   {
-      $distanceUnit   = $this->_options['distance_unit'];
-      $latField       = $this->_options['columns']['latitude']['name'];
-      $lngField       = $this->_options['columns']['longitude']['name'];
-      $a              = $query->getRootAlias();
-      $factor         = $this->_options['distance_unit'] == 'miles' ? '1.1515' : '1.1515 * 1.609344';
-      
-      $select = sprintf(
-        '((ACOS(SIN(%s * PI() / 180) * SIN(%s.%s * PI() / 180) 
-        + COS(%s * PI() / 180) * COS(%s.%s * PI() / 180) * COS((%s - %s.%s) * PI() / 180)) * 180 / PI()) * 60 * %s) 
-        AS %s',
-        $latitude, $a, $latField, $latitude, $a, $latField, $longitude, $a, $lngName, $factor, $distanceUnit);
-      
-      $query->addSelect($select);
-      
-      if($distance)
-      {
-        $query->addHaving($distance_unit.' < ? ', $distance );
-      }
+    $distanceUnit   = $this->_options['distance_unit'];
+    $latField       = $this->_options['columns']['latitude']['name'];
+    $lngField       = $this->_options['columns']['longitude']['name'];
+    $a              = $query->getRootAlias();
+    $factor         = $this->_options['distance_unit'] == 'miles' ? '1.1515' : '1.1515 * 1.609344';
 
-      return $query;
+    $select = sprintf(
+      '((ACOS(SIN(%s * PI() / 180) * SIN(%s.%s * PI() / 180) 
+      + COS(%s * PI() / 180) * COS(%s.%s * PI() / 180) * COS((%s - %s.%s) * PI() / 180)) * 180 / PI()) * 60 * %s) 
+      AS %s',
+      $latitude, $a, $latField, $latitude, $a, $latField, $longitude, $a, $lngName, $factor, $distanceUnit);
+  
+    $query->addSelect($select);
+
+    if($distance)
+    {
+      $query->addHaving($distance_unit.' < ? ', $distance );
+    }
+
+    return $query;
   }
 }
