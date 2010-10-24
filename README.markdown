@@ -35,4 +35,22 @@ The Geolocatable plugin comes with some methods for geolocation:
     field "distance" on each object represents the distance away from the passed latitude and longitude.  
     If $distance is not null, results are limited to that distance from the given geocodes.
 
+Here is an example of how to find contacts within 50 miles of Nashville.
+
+    # schema.yml
+    Contact:
+      actAs: 
+        Geolocatable
+          fields: [city, state]
+    
+    # actions.class.php
+    $nashville  = array('latitude' => 36.0775432, 'longitude' => -86.7315785);
+    $query = Doctrine_Core::getTable('Contact')->createQuery();
+    $this->contacts = Doctrine_Core::getTable('Contact')->addDistanceQuery($query, $nashville['latitude'], $nashville['longitude'], 50)->execute();
+
+Todo
+----
+
+* Abstract Geolocation into a service passed to the object via Dependency Injection (or created at runtime if it does not exist)
+
 Please contact bshaffer@centresource.com for any comments or questions
