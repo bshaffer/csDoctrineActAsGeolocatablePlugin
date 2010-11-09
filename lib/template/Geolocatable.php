@@ -133,7 +133,7 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
       '((ACOS(SIN(%s * PI() / 180) * SIN(%s.%s * PI() / 180) 
       + COS(%s * PI() / 180) * COS(%s.%s * PI() / 180) * COS((%s - %s.%s) * PI() / 180)) * 180 / PI()) * 60 * %s) 
       AS %s',
-      $latitude, $a, $latField, $latitude, $a, $latField, $longitude, $a, $lngName, $factor, $distanceUnit);
+      $latitude, $a, $latField, $latitude, $a, $latField, $longitude, $a, $lngField, $factor, $distanceUnit);
   
     $query->addSelect($select);
 
