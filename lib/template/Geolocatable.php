@@ -139,7 +139,7 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
 
     if($distance)
     {
-      $query->addHaving($distance_unit.' < ? ', $distance );
+      $query->addHaving($distanceUnit.' < ? ', $distance );
     }
 
     return $query;
