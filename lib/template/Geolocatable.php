@@ -19,15 +19,15 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
       'latitude'    =>  array(
         'name'    => 'latitude',
         'type'    => 'double',
-        'length'  =>  16,
         'alias'   =>  null,
-        'options' =>  array('length' => 16, 'scale' => 10)),
+        'length'  =>  16,
+        'options' =>  array('scale' => 10)),
       'longitude'   =>  array(
         'name'    => 'longitude',
         'type'    => 'double',
-        'length'  =>  16,
         'alias'   =>  null,
-        'options' =>  array('length' => 16, 'scale' => 10)),
+        'length'  =>  16,
+        'options' =>  array('scale' => 10)),
     ),
     'fields'       => array(),
     'distance_unit' => 'miles',
@@ -63,11 +63,16 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
     {
       $name = $options['name'];
 
-      if ($options['alias'])
+      if (isset($options['alias']))
       {
         $name .= ' as ' . $options['alias'];
       }
-      
+
+      if (!isset($options['options']))
+      {
+        $options['options'] = array();
+      }
+
       $this->hasColumn($name, $options['type'], $options['length'], $options['options']);
     }
     

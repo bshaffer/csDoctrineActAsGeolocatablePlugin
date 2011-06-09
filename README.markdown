@@ -20,6 +20,50 @@ the latitude/longitude.  Provide as many or as few fields as you want, but you m
         Geolocatable
           fields: [city, state]
             
+You may also specify additional columns to populate.  Latitude and Longitude will always be available by default:
+
+    MyModel:
+      actAs: 
+        Geolocatable
+          fields: [zip]
+          columns:
+    #-- IMPLIED:
+    #       latitude:
+    #         name:     'latitude'
+    #         type:     'double'
+    #         alias:    null
+    #         length: 16
+    #         options:
+    #           scale:  10
+    #-- IMPLIED:
+    #       longitude:
+    #         name:     'longitude'
+    #         type:     'double'
+    #         alias:    null
+    #         length: 16
+    #         options:
+    #           scale:  10
+            city:
+              name:     'city'
+              type:     'string'
+              length: 85
+            state:
+              name:     'state'
+              type:     'string'
+              length: 50
+            state_short:
+              name:    'state_short'
+              type:    'string'
+              length: 2
+            country:
+              name:     'country'
+              type:     'string'
+              length: 45
+            country_short:
+              name:     'country_short'
+              type:     'string'
+              length: 2
+            
 Methods
 -------
 
