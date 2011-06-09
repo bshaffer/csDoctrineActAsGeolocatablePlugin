@@ -13,7 +13,8 @@ $t->info('Test Geolocatable Plugin locates by City State and Zip');
   $article->zip   = 37211;
   $article->save();
         
-  $t->is($article->latitude, 36.0775432);
+  $t->info("  Verify at http://maps.google.com/maps?hl=en&q={$article->latitude},+{$article->longitude}");
+  $t->is($article->latitude, 36.0558177);
   $t->is($article->longitude, -86.7315785);
 
 $t->info('Test Geolocatable Plugin locates with missing fields');
@@ -23,7 +24,8 @@ $t->info('Test Geolocatable Plugin locates with missing fields');
   $article->zip   = 37211;
   $article->save();
   
-  $t->is($article->latitude, 36.0775432);
+  $t->info("  Verify at http://maps.google.com/maps?hl=en&q={$article->latitude},+{$article->longitude}");
+  $t->is($article->latitude, 36.0558177);
   $t->is($article->longitude, -86.7315785);
 
 $t->info('Test Geolocatable Plugin locates by address');
@@ -33,8 +35,9 @@ $t->info('Test Geolocatable Plugin locates by address');
   $article->address   = 'Tour Eiffel Champ de Mars 75007 Paris, France';
   $article->save();
   
-  $t->is($article->latitude, 48.8582780);
-  $t->is($article->longitude, 2.2942540);
+  $t->info("  Verify at http://maps.google.com/maps?hl=en&q={$article->latitude},+{$article->longitude}");
+  $t->is($article->latitude, 48.8582635);
+  $t->is($article->longitude, 2.2942543);
 
 $t->info('Test Geolocatable Plugin updates latitude / longitude automatically when saved');
 
@@ -46,13 +49,15 @@ $t->info('Test Geolocatable Plugin updates latitude / longitude automatically wh
   $article->save();
   
 
-  $t->is($article->latitude, 36.0775432);
+  $t->info("  Verify at http://maps.google.com/maps?hl=en&q={$article->latitude},+{$article->longitude}");
+  $t->is($article->latitude, 36.0558177);
   $t->is($article->longitude, -86.7315785);
 
   // Latitude / Longitude data changes with new zipcode
   $article->zip = 37212;
   $article->save();
   
+  $t->info("  Verify at http://maps.google.com/maps?hl=en&q={$article->latitude},+{$article->longitude}");
   $t->is($article->latitude, 36.1281626);
   $t->is($article->longitude, -86.7969244);
   
