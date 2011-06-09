@@ -32,42 +32,37 @@ You may also specify additional columns to populate.  Latitude and Longitude wil
     #         name:     'latitude'
     #         type:     'double'
     #         alias:    null
+    #         length: 16
     #         options:
-    #           length: 16
     #           scale:  10
     #-- IMPLIED:
     #       longitude:
     #         name:     'longitude'
     #         type:     'double'
     #         alias:    null
+    #         length: 16
     #         options:
-    #           length: 16
     #           scale:  10
             city:
               name:     'city'
               type:     'string'
-              options:
-                length: 85
+              length: 85
             state:
               name:     'state'
               type:     'string'
-              options:
-                length: 50
+              length: 50
             state_short:
               name:    'state_short'
               type:    'string'
-              options:
-                length: 2
+              length: 2
             country:
               name:     'country'
               type:     'string'
-              options:
-                length: 45
+              length: 45
             country_short:
               name:     'country_short'
               type:     'string'
-              options:
-                length: 2
+              length: 2
             
 Methods
 -------

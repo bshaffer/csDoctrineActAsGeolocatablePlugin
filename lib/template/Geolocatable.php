@@ -20,12 +20,14 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
         'name'    => 'latitude',
         'type'    => 'double',
         'alias'   =>  null,
-        'options' =>  array('length' => 16, 'scale' => 10)),
+        'length'  =>  16,
+        'options' =>  array('scale' => 10)),
       'longitude'   =>  array(
         'name'    => 'longitude',
         'type'    => 'double',
         'alias'   =>  null,
-        'options' =>  array('length' => 16, 'scale' => 10)),
+        'length'  =>  16,
+        'options' =>  array('scale' => 10)),
     ),
     'fields'       => array(),
     'distance_unit' => 'miles',
@@ -66,7 +68,12 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
         $name .= ' as ' . $options['alias'];
       }
 
-      $this->hasColumn($name, $options['type'], $options['options']['length'], $options['options']);
+      if (!isset($options['options']))
+      {
+        $options['options'] = array();
+      }
+
+      $this->hasColumn($name, $options['type'], $options['length'], $options['options']);
     }
     
     $this->addListener(new Doctrine_Template_Listener_Geolocatable($this->_options));
