@@ -53,4 +53,4 @@ Todo
 
 * Abstract Geolocation into a service passed to the object via Dependency Injection (or created at runtime if it does not exist)
 
-Please contact bshaffer@centresource.com for any comments or questions
+Please contact bshafs@gmail.com for any comments or questions
