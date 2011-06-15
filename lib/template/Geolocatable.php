@@ -6,7 +6,6 @@
  * @package    Locatable_Extension
  * @subpackage template
  * @author     Brent Shaffer
- * @author     Matt Farmer <work@mattfarmer.net>
  * @copyright  Copyright (c) 2008 Centre{source}, Brent Shaffer 2008-12-22. All rights reserved.
  */
 class Doctrine_Template_Geolocatable extends Doctrine_Template
@@ -14,25 +13,23 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
   /**
    * Array of locatable options
    */  
-  protected $_options = array(
-    'columns'     => array(
-      'latitude'    =>  array(
-        'name'    => 'latitude',
-        'type'    => 'double',
-        'length'  =>  16,
-        'alias'   =>  null,
-        'options' =>  array('length' => 16, 'scale' => 10)),
-      'longitude'   =>  array(
-        'name'    => 'longitude',
-        'type'    => 'double',
-        'length'  =>  16,
-        'alias'   =>  null,
-        'options' =>  array('length' => 16, 'scale' => 10)),
-    ),
-    'fields'       => array(),
-    'distance_unit' => 'miles',
-    'geocoder_class' => 'GoogleGeoCoder',
-  );
+  protected $_url = 'http://maps.google.com/maps/geo',
+            $_options = array('columns'     => array(
+                                'latitude'    =>  array(
+                                    'name'    => 'latitude',
+                                    'type'    => 'double',
+                                    'length'  =>  16,
+                                    'alias'   =>  null,
+                                    'options' =>  array('length' => 16, 'scale' => 10)),
+                                'longitude'   =>  array(
+                                    'name'    => 'longitude',
+                                    'type'    => 'double',
+                                    'length'  =>  16,
+                                    'alias'   =>  null,
+                                    'options' =>  array('length' => 16, 'scale' => 10)),
+                            ), 'fields'       => array(),
+                               'distance_unit' => 'miles',
+   );
 
   
   /**
@@ -74,25 +71,54 @@ class Doctrine_Template_Geolocatable extends Doctrine_Template
     $this->addListener(new Doctrine_Template_Listener_Geolocatable($this->_options));
   }
 
-
-  public function refreshGeocodes()
+  // =======================
+  // = Geocoding Functions =
+  // =======================
+  public function buildGeoQuery()
   {
-    $obj = $this->getInvoker();
-
+    $obj   = $this->getInvoker();
     $query = array();
-    foreach ($this->_options['fields'] as $field)
+    foreach ($this->_options['fields'] as $field) 
     {
       $query[] = $obj->$field;
     }
 
-    $geocoder_class = $this->_options['geocoder_class'];
-    $geocoder = new $geocoder_class(implode(', ', $query));
+    return implode(', ', array_filter($query));
+  }
 
-    foreach($this->_options['columns'] as $key => $options )
+  public function buildUrlFromQuery($query)
+  {
+    return $this->_url
+            . '?'
+            . http_build_query(array('q' => $query, 'output' => 'csv'));
+  }
+  
+  public function retrieveGeocodesFromUrl($url)
+  {
+    $codes = explode(',', file_get_contents($url));
+    $geocodes = array('latitude' => null, 'longitude' => null);
+
+    if (count($codes) >= 4) 
     {
-      $func = 'get'.sfInflector::camelize($options['name']);
-      $obj[$options['name']]  = $geocoder->$func();
+      $geocodes['latitude']  = $codes[2];
+      $geocodes['longitude'] = $codes[3];
     }
+
+    return $geocodes;
+  }
+  
+  public function refreshGeocodes($url = null)
+  {
+    $obj = $this->getInvoker();
+
+    if (!$url) 
+    {
+      $url = $this->buildUrlFromQuery($this->buildGeoQuery());
+    }
+
+    $geocodes = $this->retrieveGeocodesFromUrl($url);
+    $obj[$this->_options['columns']['latitude']['name']]  = $geocodes['latitude'];
+    $obj[$this->_options['columns']['longitude']['name']] = $geocodes['longitude'];
   }
 
   public function addDistanceQueryTableProxy($query, $latitude, $longitude, $distance = null)
