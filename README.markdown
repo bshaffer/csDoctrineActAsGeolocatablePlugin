@@ -1,8 +1,10 @@
 csDoctrineActAsGeolocatablePlugin
 =================================
 
+[![Build Status](https://secure.travis-ci.org/bshaffer/csDoctrineActAsGeolocatablePlugin.png)](http://travis-ci.org/bshaffer/csDoctrineActAsGeolocatablePlugin)
+
 This plugin is for Doctrine only.  It provides API integration with Google Maps to allow for the automatic fetching
-of latitude and longitude for a given model.  This is configurable for any field/fields on your model.  
+of latitude and longitude for a given model.  This is configurable for any field/fields on your model.
 
 How It Works
 ------------
@@ -11,15 +13,15 @@ Add the behavior to your model:
 
     MyModel:
       actAs: [Geolocatable]
-      
+
 Geolocatable requires the "fields" argument to work.  This takes an array of fields use to determine
 the latitude/longitude.  Provide as many or as few fields as you want, but you must provide at least one:
 
     MyModel:
-      actAs: 
+      actAs:
         Geolocatable
           fields: [city, state]
-            
+
 Methods
 -------
 
@@ -31,18 +33,18 @@ The Geolocatable plugin comes with some methods for geolocation:
 
 ####Table Methods
 * addDistanceQuery( $query, $latitude, $longitude, $distance = null)
-    adds distance query to a preexisting query.  
-    field "distance" on each object represents the distance away from the passed latitude and longitude.  
+    adds distance query to a preexisting query.
+    field "distance" on each object represents the distance away from the passed latitude and longitude.
     If $distance is not null, results are limited to that distance from the given geocodes.
 
 Here is an example of how to find contacts within 50 miles of Nashville.
 
     # schema.yml
     Contact:
-      actAs: 
+      actAs:
         Geolocatable
           fields: [city, state]
-    
+
     # actions.class.php
     $nashville  = array('latitude' => 36.0775432, 'longitude' => -86.7315785);
     $query = Doctrine_Core::getTable('Contact')->createQuery();
