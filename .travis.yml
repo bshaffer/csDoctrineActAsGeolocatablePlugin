@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - 5.3
+
+before_script:
+  - ./test/bin/travis-init.sh
+  - "export SYMFONY=`pwd`/lib/vendor/symfony/lib/"
+
+script: php test/bin/prove.php
+
+env:
+ - SYMFONY_REF=origin/1.4
+ - SYMFONY_REF=origin/1.3
+ - SYMFONY_REF=origin/1.2
